@@ -2,24 +2,21 @@ class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         memo = {}
 
-        def solve(currentValue):
-            if currentValue == 0:
+        def dp(target, index):
+            if target == 0:
                 return 0
-            
-            if currentValue < 0:
+            if target < 0:
                 return float('inf')
+            if index >= len(coins):
+                return float('inf')
+            if (target, index) in memo:
+                return memo[(target, index)]
             
-            if currentValue in memo:
-                return memo[currentValue]
-            
-            min_coins = float('inf')
-            
-            for coin in coins:
-                min_coins = min(min_coins, 1 + solve(currentValue - coin))
-            
-            memo[currentValue] = min_coins
-            
-            return min_coins
+            take = dp(target - coins[index], index)
+            skip = dp(target, index + 1)
 
-        result = solve(amount)
-        return result if result != float('inf') else -1
+            memo[(target, index)] = min(take + 1, skip)
+            return memo[(target, index)]
+
+        answer = dp(amount, 0)
+        return -1 if answer == float('inf') else answer
