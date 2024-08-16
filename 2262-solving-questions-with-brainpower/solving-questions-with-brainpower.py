@@ -1,14 +1,11 @@
 class Solution:
     def mostPoints(self, questions: List[List[int]]) -> int:
-        n = len(questions)
+        dp = {}
 
-        @cache
-        def solve(index):
-            if index >= n:
-                return 0
+        for i in range(len(questions)-1, -1, -1):
+            dp[i] = max(
+                questions[i][0] + dp.get(i + questions[i][1] + 1, 0),
+                dp.get(i+1, 0)
+            )
 
-            skip = solve(index + 1)
-            take = questions[index][0] + solve(index + questions[index][1] + 1)
-            return max(skip, take)
-        
-        return solve(0)
+        return dp[0]
