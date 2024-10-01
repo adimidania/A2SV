@@ -1,12 +1,9 @@
 class Solution:
-    def singleNumber(self, nums):
-        count = defaultdict(int)
-        
+    def singleNumber(self, nums: List[int]) -> int:
+        ones = twos = 0
+    
         for num in nums:
-            count[num] += 1
-
-        for num, freq in count.items():
-            if freq == 1:
-                return num
-        
-        return -1
+            ones = (ones ^ num) & ~twos
+            twos = (twos ^ num) & ~ones
+            
+        return ones
