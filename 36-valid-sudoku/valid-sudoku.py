@@ -2,7 +2,6 @@ class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         n = len(board)
         for row in board:
-            print("rows")
             nums = []
             for num in row:
                 if num != ".":
@@ -11,7 +10,6 @@ class Solution:
                 return False
 
         for i in range(n):
-            print("columns")
             nums = []
             for j in range(n):
                 if board[j][i] != ".":
@@ -20,7 +18,6 @@ class Solution:
                 return False
 
         for i in range(3):
-            print("boxes")
             for j in range(3):
                 nums = []
                 for k in range(3):
