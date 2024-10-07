@@ -1,31 +1,33 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        n = len(board)
-        for row in board:
-            nums = []
-            for num in row:
-                if num != ".":
-                    nums.append(int(num))
-            if len(nums) != len(set(nums)):
-                return False
+        rows = {}
+        cols = {}
+        boxes = {}
 
-        for i in range(n):
-            nums = []
-            for j in range(n):
-                if board[j][i] != ".":
-                    nums.append(int(board[j][i]))
-            if len(nums) != len(set(nums)):
-                return False
-
-        for i in range(3):
-            for j in range(3):
-                nums = []
-                for k in range(3):
-                    for m in range(3):
-                        num = board[3*i + k][3*j + m]
-                        if num != ".": 
-                            nums.append(int(num))
-                    if len(nums) != len(set(nums)):
+        for i in range(9):
+            for j in range(9):
+                number = board[i][j]
+                box_index = (i // 3) * 3 + (j // 3)
+                if number != '.':
+                    # Did we populate the numbers of row i? Does number exist in row i already?
+                    if i not in rows:
+                        rows[i] = {}
+                    if number in rows[i]:
                         return False
+                    rows[i][number] = 1
+
+                    # Did we populate the numbers of col j? Does number exist in col j already?
+                    if j not in cols:
+                        cols[j] = {}
+                    if number in cols[j]:
+                        return False
+                    cols[j][number] = 1
+
+                    # Did we populate the current box? Does number exist in the current box?
+                    if box_index not in boxes:
+                        boxes[box_index] = {}
+                    if number in boxes[box_index]:
+                        return False
+                    boxes[box_index][number] = 1
+
         return True
-        
